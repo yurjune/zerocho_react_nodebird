@@ -1,4 +1,5 @@
 import shortId from 'shortid';
+import produce from 'immer';
 
 export const initialState = {
   mainPosts: [{
@@ -91,75 +92,55 @@ const dummyComment = (data) => ({
   },
 });
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     case ADD_POST_REQUEST:
-      return {
-        ...state,
-        addPostLoading: true,
-        addPostDone: false,
-        addPostError: null,
-      };
+      draft.addPostLoading = true;
+      draft.addPostDone = false;
+      draft.addPostError = null;
+      break;
     case ADD_POST_SUCCESS:
-      return {
-        ...state,
-        mainPosts: [dummyPost(action.data), ...state.mainPosts],
-        addPostLoading: false,
-        addPostDone: true,
-      };
+      draft.addPostLoading = false;
+      draft.addPostDone = true;
+      draft.mainPosts.unshift(dummyPost(action.data));
+      break;
     case ADD_POST_FAILURE:
-      return {
-        ...state,
-        addPostLoading: false,
-        addPostError: action.error,
-      };
+      draft.addPostLoading = false;
+      draft.addPostError = action.error;
+      break;
     case REMOVE_POST_REQUEST:
-      return {
-        ...state,
-        removePostLoading: true,
-        removePostDone: false,
-        removePostError: null,
-      };
+      draft.removePostLoading = true;
+      draft.removePostDone = false;
+      draft.removePostError = null;
+      break;
     case REMOVE_POST_SUCCESS:
-      return {
-        ...state,
-        mainPosts: state.mainPosts.filter((post) => post.id !== action.data),
-        removePostLoading: false,
-        removePostDone: true,
-      };
+      draft.removePostLoading = false;
+      draft.removePostDone = true;
+      draft.mainPosts = draft.mainPosts.filter((post) => post.id !== action.data);
+      break;
     case REMOVE_POST_FAILURE:
-      return {
-        ...state,
-        removePostLoading: false,
-        removePostError: action.error,
-      };
+      draft.removePostLoading = false;
+      draft.removePostError = action.error;
+      break;
     case ADD_COMMENT_REQUEST:
-      return {
-        ...state,
-        addCommentLoading: true,
-        addCommentDone: false,
-        addCommentError: null,
-      };
-    case ADD_COMMENT_SUCCESS: {
-      return {
-        ...state,
-        addCommentLoading: false,
-        addCommentDone: true,
-        mainPosts: state.mainPosts.map((post) => (post.id === action.data.postId
-          ? { ...post, Comments: [dummyComment(action.data.content), ...post.Comments] }
-          : post
-        )),
-      };
+      draft.addCommentLoading = true;
+      draft.addCommentDone = false;
+      draft.addCommentError = null;
+      break;
+    case ADD_COMMENT_SUCCESS: { // case문에서 변수 선언시 중괄호 필요
+      const post = draft.mainPosts.find((v) => v.id === action.data.postId);
+      post.Comments.unshift(dummyComment(action.data.content));
+      draft.addCommentLoading = false;
+      draft.addCommentDone = true;
+      break;
     }
     case ADD_COMMENT_FAILURE:
-      return {
-        ...state,
-        addCommentLoading: false,
-        addCommentError: action.error,
-      };
+      draft.addCommentLoading = false;
+      draft.addCommentError = action.error;
+      break;
     default:
-      return state;
+      break;
   }
-};
+});
 
 export default reducer;
