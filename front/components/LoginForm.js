@@ -29,8 +29,8 @@ const loginForm = () => {
   /* 로그인 요청 과정
   1. onSubmitForm이 실행되면 dispatch함수의 인수인 action creator함수가 실행
   2. 만들어진 액션 객체를 받아 dispatch함수가 실행
-  3-1. 액션 객체의 type에 해당하는 saga의 take함수가 실행
-  3-2. 3-1가 실행되면서 reducer함수도 같이 실행
+  3-1. dispatch에 의해 reducer함수가 실행
+  3-2. 3-1이 실행되면서 saga에서 액션 객체의 type에 해당하는 take함수도 실행
   4. take함수의 호출을 따라 put함수가 실행되어 다시 reducer가 실행
   */
 

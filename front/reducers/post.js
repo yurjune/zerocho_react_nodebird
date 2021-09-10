@@ -1,3 +1,5 @@
+import shortId from 'shortid';
+
 export const initialState = {
   mainPosts: [{ // dummy
     id: 1,
@@ -26,9 +28,12 @@ export const initialState = {
     }],
   }],
   imagePaths: [],
-  addPostLoding: false,
+  addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
 };
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
@@ -49,56 +54,71 @@ export const addComment = (data) => ({
   data,
 });
 
-const dummyPost = {
-  id: 2,
-  content: '더미데이터입니다.',
+const dummyPost = (data) => ({
+  id: shortId.generate(),
+  content: data,
   User: {
     id: 1,
     nickname: '제로초',
   },
   Images: [],
   Comments: [],
-};
+});
+
+const dummyComment = (data) => ({
+  id: shortId.generate(),
+  content: data,
+  User: {
+    id: 1,
+    nickname: '댓글러',
+  },
+});
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST_REQUEST:
       return {
         ...state,
-        addPostLoding: true,
+        addPostLoading: true,
         addPostDone: false,
         addPostError: null,
       };
     case ADD_POST_SUCCESS:
       return {
         ...state,
-        mainPosts: [dummyPost, ...state.mainPosts], // 앞에 추가해야 게시글이 맨 위로
-        addPostLoding: true,
+        mainPosts: [dummyPost(action.data), ...state.mainPosts], // 앞에 추가해야 게시글이 맨 위로
+        addPostLoading: true,
         addPostDone: false,
       };
     case ADD_POST_FAILURE:
       return {
         ...state,
-        addCommentLoding: false,
+        addCommentLoading: false,
         addCommentError: action.error,
       };
     case ADD_COMMENT_REQUEST:
       return {
         ...state,
-        addCommentLoding: true,
+        addCommentLoading: true,
         addCommentDone: false,
         addCommentError: null,
       };
-    case ADD_COMMENT_SUCCESS:
+    case ADD_COMMENT_SUCCESS: {
+      console.log([...state.mainPosts]);
       return {
         ...state,
-        addCommentLoding: true,
-        addCommentDone: false,
+        addCommentLoading: false,
+        addCommentDone: true,
+        mainPosts: [...state.mainPosts].map((post) => (post.id === action.data.postId
+          ? { ...post, Comments: [dummyComment(action.data.content), ...post.Comments] }
+          : post
+        )),
       };
+    }
     case ADD_COMMENT_FAILURE:
       return {
         ...state,
-        addCommentLoding: false,
+        addCommentLoading: false,
         addCommentError: action.error,
       };
     default:
