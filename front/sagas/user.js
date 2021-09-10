@@ -1,26 +1,25 @@
-import { all, fork, call, takeLatest, put, delay } from 'redux-saga/effects';
-import axios from 'axios';
+import { all, fork, takeLatest, put, delay } from 'redux-saga/effects';
+// import axios from 'axios';
 
-import { 
-  LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, 
+import {
+  LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE,
   LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE,
   SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE,
-  FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE,
-  UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE,
+  // FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE,
+  // UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE,
 } from '../reducers/user';
 
+// function logInAPI(data) { // 제너레이터 아님
+//   return axios.post('/api/login', data);
+// }
 
-function logInAPI(data) { // 제너레이터 아님
-  return axios.post('/api/login', data);
-}
+// function logOutAPI() {
+//   return axios.post('/api/logout');
+// }
 
-function logOutAPI() {
-  return axios.post('/api/logout');
-}
-
-function signUpAPI() {
-  return axios.post('/api/signup');
-}
+// function signUpAPI() {
+//   return axios.post('/api/signup');
+// }
 
 // function followAPI() {
 //   return axios.post('/api/follow');
@@ -36,7 +35,7 @@ function* logIn(action) {
   try {
     // call()에서 첫 번째 인수는 함수, 나머지 인수들은 첫 번째 인수 함수의 매개변수가 된다.
     // const result = yield call(logInAPI, action.data);
-    yield delay(1000);  // 아직 서버가 없으므로
+    yield delay(1000); // 아직 서버가 없으므로
     yield put({
       type: LOG_IN_SUCCESS,
       data: action.data,
@@ -45,7 +44,7 @@ function* logIn(action) {
     yield put({
       type: LOG_IN_FAILURE,
       error: err.response.data,
-    })
+    });
   }
 }
 
@@ -108,7 +107,6 @@ function* signUp() {
 //     });
 //   }
 // }
-
 
 function* watchLogin() {
   // LOI_IN_REQUEST 액션이 실행되면 logIn을 실행

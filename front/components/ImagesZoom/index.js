@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Slick from 'react-slick';  // 캐루셀 라이브러리
+import Slick from 'react-slick'; // 캐루셀 라이브러리
 import { Overlay, Header, CloseBtn, SlickWrapper, ImgWrapper, Indicator, Global } from './styles';
 
 const ImagesZoom = ({ images, onClose }) => {

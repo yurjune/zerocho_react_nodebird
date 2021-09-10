@@ -1,9 +1,9 @@
-import { createWrapper } from "next-redux-wrapper";
+import { createWrapper } from 'next-redux-wrapper';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import createSagaMiddleware from 'redux-saga';
 import reducer from '../reducers/index';
 import rootSaga from '../sagas';
-import createSagaMiddleware from 'redux-saga';
 
 // redux-thunk 참고하여 커스텀미들웨어 만들기
 const loggerMiddleware = ({ dispatch, getState }) => (next) => (action) => {

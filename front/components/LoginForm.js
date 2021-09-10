@@ -37,12 +37,12 @@ const loginForm = () => {
   return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-email"></label>
+        <label htmlFor="user-email" />
         <br />
         <Input name="user-email" value={email} required onChange={onChangeEmail} />
       </div>
       <div>
-        <label htmlFor="user-password"></label>
+        <label htmlFor="user-password" />
         <br />
         <Input name="user-password" value={password} type="password" required onChange={onChangePassword} />
       </div>
@@ -52,6 +52,6 @@ const loginForm = () => {
       </ButtonWrapper>
     </FormWrapper>
   );
-}
+};
 
 export default loginForm;

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 // 커스텀 훅
 export default (initialValue = null) => {

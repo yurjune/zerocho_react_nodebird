@@ -5,11 +5,11 @@ import user from './user';
 import post from './post';
 
 const rootReducer = combineReducers({
-  index: (state={}, action) => {
+  index: (state = {}, action) => {
     switch (action.type) {
-      case HYDRATE:  // SSR에 필요한 action
+      case HYDRATE: // SSR에 필요한 action
         console.log(HYDRATE);
-        return {...state, ...action.payload}
+        return { ...state, ...action.payload };
       default:
         return state;
     }

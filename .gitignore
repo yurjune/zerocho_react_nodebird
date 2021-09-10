@@ -2,4 +2,6 @@ node_modules
 .next
 react-nodebird
 practice
+review
 csr_vs_ssr.txt
+.vscode

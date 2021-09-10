@@ -7,20 +7,18 @@ import wrapper from '../store/configureStore';
 
 // 여기서 Component는 서버에 요청한 페이지
 // index.js의 Home이 Component에 들어간다.
-const Nodebird = ({ Component }) => {
-  return (
-    <>
-      <Head>
-        <meta charSet="utf-8" />
-        <title>Nodebird</title>
-      </Head>
-      <Component />
-    </>
-  )
-}
+const Nodebird = ({ Component }) => (
+  <>
+    <Head>
+      <meta charSet="utf-8" />
+      <title>Nodebird</title>
+    </Head>
+    <Component />
+  </>
+);
 
 Nodebird.propTypes = {
   Component: PropTypes.elementType.isRequired,
-}
+};
 
 export default wrapper.withRedux(Nodebird); // high order component

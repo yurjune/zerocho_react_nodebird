@@ -1,8 +1,8 @@
 import { Button, Form, Input } from 'antd';
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { ADD_COMMENT_REQUEST } from '../reducers/post';
 import { useDispatch, useSelector } from 'react-redux';
+import { ADD_COMMENT_REQUEST } from '../reducers/post';
 import useInput from '../hooks/useInput';
 
 const CommentForm = ({ post }) => {
@@ -21,7 +21,7 @@ const CommentForm = ({ post }) => {
     console.log(post.id, commentText);
     dispatch({
       type: ADD_COMMENT_REQUEST,
-      data: { content: commentText, postId: post.id, userId: id },  // postId, userId
+      data: { content: commentText, postId: post.id, userId: id }, // postId, userId
     });
   }, [commentText]);
 
