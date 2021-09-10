@@ -11,7 +11,7 @@ function addPostAPI(data) {
   return axios.post('/api/post', data);
 }
 
-function* addPost(action) {
+function* addPost() {
   try {
     // const result = yield call(addPostAPI, action.data);
     yield delay(1000);

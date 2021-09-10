@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "next -p 3060",
-    "build": "next build"
+    "build": "next build",
+    "lint": "eslint src"
   },
   "author": "honey",
   "license": "ISC",

@@ -34,29 +34,25 @@ export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 
 // action creator: 동적으로 action을 생성
-export const loginRequestAction = (data) => {
-  return {
-    type: LOG_IN_REQUEST,
-    data,
-  }
-}
+export const loginRequestAction = (data) => ({
+  type: LOG_IN_REQUEST,
+  data,
+});
 
-export const logoutRequestAction = (data) => {
-  return {
-    type: LOG_OUT_REQUEST,
-  }
-}
+export const logoutRequestAction = () => ({
+  type: LOG_OUT_REQUEST,
+});
 
 const dummyUser = (data) => ({
   ...data,
   nickname: '제로초',
   id: 1,
-  Posts: [{ id: 1}],
+  Posts: [{ id: 1 }],
   Followings: [{ nickname: '부기초' }, { nickname: 'Chanho Lee' }, { nickname: 'neue zeal' }],
   Followers: [{ nickname: '부기초' }, { nickname: 'Chanho Lee' }, { nickname: 'neue zeal' }],
 });
 
-const reducer = (state=initialState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOG_IN_REQUEST:
       console.log('reducer login');
@@ -65,59 +61,59 @@ const reducer = (state=initialState, action) => {
         logInLoading: true,
         logInDone: false,
         logInError: null,
-      }
+      };
     case LOG_IN_SUCCESS:
       return {
         ...state,
         logInLoading: false,
         logInDone: true,
-        me: dummyUser(),  // 여기서 me가 생성
-      }
+        me: dummyUser(), // 여기서 me가 생성
+      };
     case LOG_IN_FAILURE:
       return {
         ...state,
         logInLoading: false,
         logInError: action.error,
-      }
+      };
     case LOG_OUT_REQUEST:
       return {
         ...state,
         logOutLoading: true,
         logOutDone: false,
         logOutError: null,
-      }
+      };
     case LOG_OUT_SUCCESS:
       return {
         ...state,
         logOutLoading: false,
         logOutDone: true,
         me: null,
-      }
+      };
     case LOG_OUT_FAILURE:
       return {
         ...state,
         logOutLoading: false,
         logOutError: action.error,
-      }
+      };
     case SIGN_UP_REQUEST:
       return {
         ...state,
         signUpLoading: true,
         signUpDone: false,
         signUpError: null,
-      }
+      };
     case SIGN_UP_SUCCESS:
       return {
         ...state,
         signUpLoading: false,
         signUpDone: true,
-      }
+      };
     case SIGN_UP_FAILURE:
       return {
         ...state,
         signUpLoading: false,
         signUpError: action.error,
-      }
+      };
     default:
       return state;
   }

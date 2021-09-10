@@ -23,7 +23,7 @@ export const initialState = {
         nickname: 'hero',
       },
       content: '얼른 사고싶어요~',
-    }]
+    }],
   }],
   imagePaths: [],
   addPostLoding: false,
@@ -60,7 +60,7 @@ const dummyPost = {
   Comments: [],
 };
 
-const reducer = (state=initialState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST_REQUEST:
       return {

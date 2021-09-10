@@ -17,14 +17,14 @@ const ButtonWrapper = styled.div`
 
 const loginForm = () => {
   const dispatch = useDispatch();
-  const { isLoggingIn } = useSelector((state) => state.user);
-  const [id, onChangeId] = useInput('');
+  const { logInLoading } = useSelector((state) => state.user);
+  const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
 
   const onSubmitForm = useCallback(() => {
-    console.log(id, password);
-    dispatch(loginRequestAction({ id, password }));
-  }, [id, password]); //
+    console.log(email, password);
+    dispatch(loginRequestAction({ email, password }));
+  }, [email, password]); //
 
   /* 로그인 요청 과정
   1. onSubmitForm이 실행되면 dispatch함수의 인수인 action creator함수가 실행
@@ -37,9 +37,9 @@ const loginForm = () => {
   return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-id"></label>
+        <label htmlFor="user-email"></label>
         <br />
-        <Input name="user-id" value={id} required onChange={onChangeId} />
+        <Input name="user-email" value={email} required onChange={onChangeEmail} />
       </div>
       <div>
         <label htmlFor="user-password"></label>
@@ -47,7 +47,7 @@ const loginForm = () => {
         <Input name="user-password" value={password} type="password" required onChange={onChangePassword} />
       </div>
       <ButtonWrapper>
-        <Button type="primary" htmlType="submit" loading={isLoggingIn}>로그인</Button>
+        <Button type="primary" htmlType="submit" loading={logInLoading}>로그인</Button>
         <Link href="/signup"><a><Button>회원가입</Button></a></Link>
       </ButtonWrapper>
     </FormWrapper>
