@@ -1,5 +1,6 @@
 import shortId from 'shortid';
 import produce from 'immer';
+import faker from 'faker';
 
 export const initialState = {
   mainPosts: [{
@@ -61,6 +62,29 @@ export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
+
+// faker로 더미데이터 만들기
+initialState.mainPosts = initialState.mainPosts.concat(
+  Array(20).fill().map(() => ({
+    id: shortId.generate(),
+    User: {
+      id: shortId.generate(),
+      nickname: faker.name.findName(),
+    },
+    content: faker.lorem.paragraph(),
+    Images: [{
+      // src: 'https://via.placeholder.com/640x480.png',
+      src: faker.image.image(),
+    }],
+    Comments: [{
+      User: {
+        id: shortId.generate(),
+        nickname: faker.name.findName(),
+      },
+      content: faker.lorem.sentence(),
+    }],
+  })),
+);
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
