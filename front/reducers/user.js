@@ -2,6 +2,12 @@ import produce from 'immer';
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from './post';
 
 export const initialState = {
+  followLoading: false,
+  followDone: false,
+  followError: null,
+  unfollowLoading: false,
+  unfollowDone: false,
+  unfollowError: null,
   logInLoading: false,
   logInDone: false,
   logInError: null,
@@ -64,6 +70,34 @@ const dummyUser = (data) => ({
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
+    case FOLLOW_REQUEST:
+      draft.followLoading = true;
+      draft.followDone = false;
+      draft.followError = null;
+      break;
+    case FOLLOW_SUCCESS:
+      draft.followLoading = false;
+      draft.followDone = true;
+      draft.me.Followings.push({ id: action.data });
+      break;
+    case FOLLOW_FAILURE:
+      draft.unfollowLoading = false;
+      draft.unfollowError = action.error;
+      break;
+    case UNFOLLOW_REQUEST:
+      draft.unfollowLoading = true;
+      draft.unfollowDone = false;
+      draft.unfollowError = null;
+      break;
+    case UNFOLLOW_SUCCESS:
+      draft.unfollowLoading = false;
+      draft.unfollowDone = true;
+      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data);
+      break;
+    case UNFOLLOW_FAILURE:
+      draft.unfollowLoading = false;
+      draft.unfollowError = action.error;
+      break;
     case LOG_IN_REQUEST:
       console.log('reducer login');
       draft.logInLoading = true;

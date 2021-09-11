@@ -1,33 +1,17 @@
 import { all, fork, takeLatest, put, delay } from 'redux-saga/effects';
-// import axios from 'axios';
+import axios from 'axios';
 
 import {
   LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE,
   LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE,
   SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE,
-  // FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE,
-  // UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE,
+  FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE,
+  UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE,
 } from '../reducers/user';
 
-// function logInAPI(data) { // 제너레이터 아님
-//   return axios.post('/api/login', data);
-// }
-
-// function logOutAPI() {
-//   return axios.post('/api/logout');
-// }
-
-// function signUpAPI() {
-//   return axios.post('/api/signup');
-// }
-
-// function followAPI() {
-//   return axios.post('/api/follow');
-// }
-
-// function unfollowAPI() {
-//   return axios.post('/api/unfollow');
-// }
+function logInAPI(data) { // 제너레이터 아님
+  return axios.post('/api/login', data);
+}
 
 function* logIn(action) {
   console.log('saga login');
@@ -48,6 +32,10 @@ function* logIn(action) {
   }
 }
 
+function logOutAPI() {
+  return axios.post('/api/logout');
+}
+
 function* logOut() {
   try {
     // const result = yield call(logOutAPI);
@@ -61,6 +49,10 @@ function* logOut() {
       error: err.response.data,
     });
   }
+}
+
+function signUpAPI() {
+  return axios.post('/api/signup');
 }
 
 function* signUp() {
@@ -78,35 +70,45 @@ function* signUp() {
   }
 }
 
-// function* follow() {
-//   try {
-//     // const result = yield call(followAPI);
-//     yield delay(1000);
-//     yield put({
-//       type: FOLLOW_SUCCESS,
-//     });
-//   } catch (err) {
-//     yield put({
-//       type: FOLLOW_FAILURE,
-//       error: err.response.data,
-//     });
-//   }
-// }
+function followAPI() {
+  return axios.post('/api/follow');
+}
 
-// function* unfollow() {
-//   try {
-//     // const result = yield call(unfollowAPI);
-//     yield delay(1000);
-//     yield put({
-//       type: UNFOLLOW_SUCCESS,
-//     });
-//   } catch (err) {
-//     yield put({
-//       type: UNFOLLOW_FAILURE,
-//       error: err.response.data,
-//     });
-//   }
-// }
+function* follow(action) {
+  try {
+    // const result = yield call(followAPI);
+    yield delay(1000);
+    yield put({
+      type: FOLLOW_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    yield put({
+      type: FOLLOW_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function unfollowAPI() {
+  return axios.post('/api/unfollow');
+}
+
+function* unfollow(action) {
+  try {
+    // const result = yield call(unfollowAPI);
+    yield delay(1000);
+    yield put({
+      type: UNFOLLOW_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    yield put({
+      type: UNFOLLOW_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 
 function* watchLogin() {
   // LOI_IN_REQUEST 액션이 실행되면 logIn을 실행
@@ -121,13 +123,13 @@ function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
-// function* watchFollow() {
-//   yield takeLatest(FOLLOW_REQUEST, follow);
-// }
+function* watchFollow() {
+  yield takeLatest(FOLLOW_REQUEST, follow);
+}
 
-// function* watchUnfollow() {
-//   yield takeLatest(UNFOLLOW_REQUEST, unfollow);
-// }
+function* watchUnfollow() {
+  yield takeLatest(UNFOLLOW_REQUEST, unfollow);
+}
 
 export default function* userSaga() {
   // all은 배열을 받아 배열 안의 요소들을 한번에 실행
@@ -136,7 +138,7 @@ export default function* userSaga() {
     fork(watchLogin),
     fork(watchLogout),
     fork(watchSignUp),
-    // fork(watchFollow),
-    // fork(watchUnfollow),
+    fork(watchFollow),
+    fork(watchUnfollow),
   ]);
 }
