@@ -59,14 +59,14 @@ export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
 });
 
-const dummyUser = (data) => ({
-  ...data,
-  nickname: '제로초',
-  id: 1,
-  Posts: [{ id: 1 }],
-  Followings: [{ nickname: '부기초' }, { nickname: 'Chanho Lee' }, { nickname: 'neue zeal' }],
-  Followers: [{ nickname: '부기초' }, { nickname: 'Chanho Lee' }, { nickname: 'neue zeal' }],
-});
+// const dummyUser = (data) => ({
+//   ...data,
+//   nickname: '제로초',
+//   id: 1,
+//   Posts: [{ id: 1 }],
+//   Followings: [{ nickname: '부기초' }, { nickname: 'Chanho Lee' }, { nickname: 'neue zeal' }],
+//   Followers: [{ nickname: '부기초' }, { nickname: 'Chanho Lee' }, { nickname: 'neue zeal' }],
+// });
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
@@ -99,7 +99,6 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.unfollowError = action.error;
       break;
     case LOG_IN_REQUEST:
-      console.log('reducer login');
       draft.logInLoading = true;
       draft.logInDone = false;
       draft.logInError = null;
@@ -107,7 +106,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case LOG_IN_SUCCESS:
       draft.logInLoading = false;
       draft.logInDone = true;
-      draft.me = dummyUser(action.data);
+      draft.me = action.data;
       break;
     case LOG_IN_FAILURE:
       draft.logInLoading = false;

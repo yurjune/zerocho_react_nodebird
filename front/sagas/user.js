@@ -1,4 +1,4 @@
-import { all, fork, takeLatest, put, delay } from 'redux-saga/effects';
+import { all, fork, takeLatest, put, delay, call } from 'redux-saga/effects';
 import axios from 'axios';
 
 import {
@@ -10,19 +10,16 @@ import {
 } from '../reducers/user';
 
 function logInAPI(data) { // 제너레이터 아님
-  return axios.post('/api/login', data);
+  return axios.post('/user/login', data);
 }
 
 function* logIn(action) {
-  console.log('saga login');
-  // 성공 결과는 result.data, 실패결과는 err.response.data에 담겨진다.
+  // 성공 결과는 result.data, 실패 결과는 err.response.data에 담겨있다.
   try {
-    // call()에서 첫 번째 인수는 함수, 나머지 인수들은 첫 번째 인수 함수의 매개변수가 된다.
-    // const result = yield call(logInAPI, action.data);
-    yield delay(1000); // 아직 서버가 없으므로
+    const result = yield call(logInAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
@@ -33,13 +30,12 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post('/api/logout');
+  return axios.post('/user/logout');
 }
 
 function* logOut() {
   try {
-    // const result = yield call(logOutAPI);
-    yield delay(1000);
+    yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
     });
@@ -51,14 +47,14 @@ function* logOut() {
   }
 }
 
-function signUpAPI() {
-  return axios.post('/api/signup');
+function signUpAPI(data) {
+  return axios.post('/user', data);
 }
 
-function* signUp() {
+function* signUp(action) {
   try {
-    // const result = yield call(signUpAPI);
-    yield delay(1000);
+    const result = yield call(signUpAPI, action.data);
+    console.log(result);
     yield put({
       type: SIGN_UP_SUCCESS,
     });
@@ -110,12 +106,12 @@ function* unfollow(action) {
   }
 }
 
-function* watchLogin() {
+function* watchLogIn() {
   // LOI_IN_REQUEST 액션이 실행되면 logIn을 실행
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
 
-function* watchLogout() {
+function* watchLogOut() {
   yield takeLatest(LOG_OUT_REQUEST, logOut);
 }
 
@@ -132,11 +128,10 @@ function* watchUnfollow() {
 }
 
 export default function* userSaga() {
-  // all은 배열을 받아 배열 안의 요소들을 한번에 실행
   // call은 동기적으로, fork는 비동기적으로 함수를 실행
   yield all([
-    fork(watchLogin),
-    fork(watchLogout),
+    fork(watchLogIn),
+    fork(watchLogOut),
     fork(watchSignUp),
     fork(watchFollow),
     fork(watchUnfollow),

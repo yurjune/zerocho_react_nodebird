@@ -19,14 +19,13 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    console.log('useEffect implemented');
     function onScroll() {
       // console.log(
       //   window.scrollY, // 문서가 얼마나 스크롤됬는지
       //   document.documentElement.clientHeight, // 화면에 보이는 높이
       //   document.documentElement.scrollHeight, // 요소의 전체 높이
       // );
-      console.log('scrolling now');
+      // console.log('scrolling now');
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if (hasMorePosts && !loadPostsLoading) {
           dispatch({
@@ -37,7 +36,6 @@ const Home = () => {
     }
     window.addEventListener('scroll', onScroll);
     return () => {
-      console.log('eventListener removed');
       window.removeEventListener('scroll', onScroll);
     };
   }, [hasMorePosts, loadPostsLoading]);
