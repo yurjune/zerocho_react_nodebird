@@ -49,6 +49,8 @@ export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 
+export const CLEAR_USER_ERROR = 'CLEAR_USER_ERROR';
+
 // action creator: 동적으로 action을 생성
 export const loginRequestAction = (data) => ({
   type: LOG_IN_REQUEST,
@@ -157,6 +159,11 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case REMOVE_POST_OF_ME:
       draft.me.Posts = draft.me.Posts.filter((post) => post.id !== action.data);
+      break;
+    case CLEAR_USER_ERROR:
+      draft.logInError = null;
+      draft.logOutError = null;
+      draft.signUpError = null;
       break;
     default:
       break;

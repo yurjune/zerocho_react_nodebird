@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useInput from '../hooks/useInput';
-import { loginRequestAction } from '../reducers/user';
+import { loginRequestAction, CLEAR_USER_ERROR } from '../reducers/user';
 
 const FormWrapper = styled(Form)`
   padding: 10px;
@@ -30,7 +30,10 @@ const loginForm = () => {
 
   useEffect(() => {
     if (logInError) {
-      alert(logInError); // alert후 logInError 비워줘야하는거 해결하기
+      alert(logInError);
+      dispatch({
+        type: CLEAR_USER_ERROR,
+      });
     }
   }, [logInError]);
 

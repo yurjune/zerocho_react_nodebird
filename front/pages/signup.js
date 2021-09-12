@@ -7,7 +7,7 @@ import Router from 'next/router';
 
 import useInput from '../hooks/useInput';
 import AppLayout from '../components/AppLayout';
-import { SIGN_UP_REQUEST } from '../reducers/user';
+import { SIGN_UP_REQUEST, CLEAR_USER_ERROR } from '../reducers/user';
 
 const ErrorMessage = styled.div`
   color: red;
@@ -26,6 +26,9 @@ const Signup = () => {
   useEffect(() => {
     if (signUpError) {
       alert(signUpError);
+      dispatch({
+        type: CLEAR_USER_ERROR,
+      });
     }
   }, [signUpError]);
 
