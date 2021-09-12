@@ -1,6 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const Hashtag = sequelize.define('Hashtag', {
-    // id는 자동생성
     name: {
       type: DataTypes.STRING(20),
       allowNull: false,

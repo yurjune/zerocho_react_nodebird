@@ -2,16 +2,17 @@ const express = require('express');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const { User, Post } = require('../models');  // db.User을 가져오는 것
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express();
 
-router.post('/login', async (req, res, next) => {
+router.post('/login', isNotLoggedIn, async (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
-    if (err) {  // 서버에러
+    if (err) {
       console.error(err);
       return next(err);
     }
-    if (info) { // 클라이언트 에러
+    if (info) {
       return res.status(401).send(info.reason);
     }
     return req.logIn(user, async (loginErr) => {
@@ -27,7 +28,7 @@ router.post('/login', async (req, res, next) => {
             exclude: ['password'],
           },
           include: [{
-            model: Post, // hasMany라서 model: Post가 복수형이 되어 me.Posts가 됩니다.
+            model: Post,
           }, {
             model: User,
             as: 'Followings',
@@ -45,7 +46,7 @@ router.post('/login', async (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/logout', (req, res, next) => {
+router.post('/logout', isLoggedIn, (req, res, next) => {
   console.log(req.user);
   req.logout();
   req.session.destroy();
@@ -53,7 +54,7 @@ router.post('/logout', (req, res, next) => {
 })
 
 // 회원가입
-router.post('/', async (req, res, next) => {
+router.post('/', isNotLoggedIn, async (req, res, next) => {
   try {
     const exUser = await User.findOne({
       where: { email: req.body.email }

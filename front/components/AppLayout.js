@@ -13,9 +13,8 @@ const SearchInput = styled(Input.Search)`
 `;
 
 const AppLayout = ({ children }) => {
-  /* useSelector은 redux로 관리하는 state를 가져온다.
-  function 컴포넌트가 렌더링될 때와 action이 dispatch될 때 작동한다.
-  비교를 수행하여 이전값과 현재값이 다르면 리렌더링한다.
+  /* useSelector: function 컴포넌트가 렌더링될 때와 action이 dispatch될 때 작동
+  비교를 수행하여 이전값과 현재값이 다르면 리렌더링
   */
   const { me } = useSelector((state) => state.user);
 

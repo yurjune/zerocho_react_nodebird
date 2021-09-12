@@ -1,10 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
-  // sequelize의 모델은 대문자로 만들기 -> MySQL에는 users 테이블 생성.
   const User = sequelize.define('User', {
     email: {
       type: DataTypes.STRING(30),
       allowNull: false,
-      unique: true, // 고유한 값
+      unique: true,
     },
     nickname: {
       type: DataTypes.STRING(30),

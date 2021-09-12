@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
-const db = {};  // ㅎㅎㅎ
+const db = {};
 
 // mysql2에 정보들을 넘겨주어 node와 mysql을 연결
 const sequelize = new Sequelize(
