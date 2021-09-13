@@ -16,10 +16,10 @@ const app = express();
 dotenv.config();
 
 db.sequelize.sync()
-.then(() => {
-  console.log('연결 성공');
-})
-.catch(console.error);
+  .then(() => {
+    console.log('연결 성공');
+  })
+  .catch(console.error);
 
 passportConfig();
 
