@@ -69,9 +69,6 @@ export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
-export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
-export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
-
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
   data,
