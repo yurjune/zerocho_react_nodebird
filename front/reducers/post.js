@@ -28,7 +28,6 @@ export const generateDummyPost = (number) => Array(number).fill().map(() => ({
   },
   content: faker.lorem.paragraph(),
   Images: [{
-    // src: 'https://via.placeholder.com/640x480.png',
     src: faker.image.image(),
   }],
   Comments: [{
@@ -67,15 +66,6 @@ export const addPost = (data) => ({
 export const addComment = (data) => ({
   type: ADD_COMMENT_REQUEST,
   data,
-});
-
-const dummyComment = (data) => ({
-  id: shortId.generate(),
-  content: data,
-  User: {
-    id: 1,
-    nickname: '댓글러',
-  },
 });
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {

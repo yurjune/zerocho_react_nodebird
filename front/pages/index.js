@@ -5,6 +5,7 @@ import AppLayout from '../components/AppLayout';
 import PostCard from '../components/PostCard';
 import PostForm from '../components/PostForm';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,9 @@ const Home = () => {
   const { mainPosts } = useSelector((state) => state.post);
 
   useEffect(() => {
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
     dispatch({
       type: LOAD_POSTS_REQUEST,
     });
@@ -25,7 +29,6 @@ const Home = () => {
       //   document.documentElement.clientHeight, // 화면에 보이는 높이
       //   document.documentElement.scrollHeight, // 요소의 전체 높이
       // );
-      // console.log('scrolling now');
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if (hasMorePosts && !loadPostsLoading) {
           dispatch({

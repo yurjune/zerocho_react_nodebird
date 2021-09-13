@@ -2,11 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 const passport = require('passport');
-const passportConfig = require('./passport'); // index.js 모듈 불러오기
+const passportConfig = require('./passport');
 const dotenv = require('dotenv');
 
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 const db = require('./models/index');
 const app = express();
@@ -22,8 +24,15 @@ db.sequelize.sync()
 passportConfig();
 
 app.use(cors({
-  origin: '*',
+  origin: 'http://localhost:3060',
+  credentials: true,
+  /* 서로간의 쿠키 전달:
+  프론트의 axios에서는 withCredentials: true,
+  백엔드에서는 cors에서 credentials: true
+  */
 }));
+
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -39,18 +48,7 @@ app.get('/', (req, res) => {
   res.send('hello express');
 });
 
-app.get('/api', (req, res) => {
-  res.send('hello api');
-});
-
-app.get('/api/posts', (req, res) => {
-  res.json([
-    { id: 1, content: 'hello' },
-    { id: 2, content: 'hello2' },
-    { id: 3, content: 'hello3' },
-  ]);
-});
-
+app.use('/posts', postsRouter);
 app.use('/post', postRouter);
 app.use('/user', userRouter);
 
