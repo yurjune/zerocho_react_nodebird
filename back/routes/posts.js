@@ -25,6 +25,13 @@ router.get('/', async (req, res, next) => {
         model: User,
         as: 'Likers',
         attributes: ['id'],
+      }, {
+        model: Post,
+        as: 'Retweet',
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname'],
+        }],
       }],
     });
     res.status(200).json(posts);

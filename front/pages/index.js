@@ -11,7 +11,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const { hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
   const { me } = useSelector((state) => state.user);
-  const { mainPosts } = useSelector((state) => state.post);
+  const { mainPosts, retweetError } = useSelector((state) => state.post);
 
   useEffect(() => {
     dispatch({
@@ -42,6 +42,12 @@ const Home = () => {
       window.removeEventListener('scroll', onScroll);
     };
   }, [hasMorePosts, loadPostsLoading]);
+
+  useEffect(() => {
+    if (retweetError) {
+      alert(retweetError);
+    }
+  }, [retweetError]);
 
   return (
     <AppLayout>
