@@ -1,10 +1,17 @@
 const express = require('express');
+const { Op } = require('sequelize');
 const { Post, Image, Comment, User } = require('../models');
 const router = express();
 
 router.get('/', async (req, res, next) => {
   try {
+    const where = {};
+    if (parseInt(req.query.lastId, 10)) {
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) }
+    }
     const posts = await Post.findAll({
+      // lastId보다 작은 id의 게시글을 limit개 만큼 불러오기
+      where,
       limit: 10,
       order: [
         ['createdAt', 'DESC'],
