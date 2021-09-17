@@ -16,6 +16,12 @@ const Post = () => {
   const { singlePost } = useSelector((state) => state.post);
   const { id } = router.query;
 
+  // if (router.isFallback !singlePost) {
+  //   // fallback이 true이면 paths에 없는 요소에 대해서는 getStaticProps를 적용
+  //   return <div>로딩중...</div>;
+  //   // next@9.4.5 이상에서 에러 해결
+  // }
+
   return (
     <AppLayout>
       <Head>
@@ -31,6 +37,17 @@ const Post = () => {
   );
 };
 
+// export async function getStaticPaths() {
+//   return {
+//     paths: [
+//       { params: { id: '1' } },
+//       { params: { id: '2' } },
+//       { params: { id: '3' } },
+//     ],
+//     fallback: false,
+//   };
+// }
+
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
   const cookie = context.req ? context.req.headers.cookie : '';
   axios.defaults.headers.Cookie = '';
@@ -45,7 +62,6 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
     data: context.params.id, // 혹은 context.query.id
   });
   context.store.dispatch(END);
-  console.log('getServerSideProps end');
   await context.store.sagaTask.toPromise();
 });
 

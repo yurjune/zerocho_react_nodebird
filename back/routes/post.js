@@ -77,6 +77,13 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
   }
 });
 
+// upload.array('image')에서 'image'는 formData의 key
+router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
+  console.log(req.files);
+  const files = req.files.map((file) => file.filename);
+  res.json(files);
+});
+
 router.get('/:postId', async (req, res, next) => {
   try {
     const post = await Post.findOne({
@@ -116,13 +123,6 @@ router.get('/:postId', async (req, res, next) => {
     console.error(error);
     next(error);
   }
-});
-
-// upload.array('image')에서 'image'는 formData의 key
-router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
-  console.log(req.files);
-  const files = req.files.map((file) => file.filename);
-  res.json(files);
 });
 
 router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {

@@ -92,18 +92,26 @@ const PostCard = ({ post }) => {
         { post.RetweetId && post.Retweet
           ? (
             <Card
-              cover={post.Images[0] && <PostImages images={post.Retweet.Images} />}
+              cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}
             >
               <Card.Meta
-                avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-                title={post.User.nickname}
+                avatar={(
+                  <Link href={`/user/${post.Retweet.User.id}`}>
+                    <a><Avatar>{post.Retweet.User.nickname[0]}</Avatar></a>
+                  </Link>
+                )}
+                title={post.Retweet.User.nickname}
                 description={<PostCardContent postData={post.Retweet.content} />}
               />
             </Card>
           )
           : (
             <Card.Meta
-              avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+              avatar={(
+                <Link href={`/user/${post.User.id}`}>
+                  <a><Avatar>{post.User.nickname[0]}</Avatar></a>
+                </Link>
+              )}
               title={post.User.nickname}
               description={<PostCardContent postData={post.content} />}
             />
@@ -122,7 +130,7 @@ const PostCard = ({ post }) => {
                 <Comment
                   author={item.User.nickname}
                   avatar={(
-                    <Link href={{ pathname: '/user', query: { id: item.User.id } }} as={`/user/${item.User.id}`}>
+                    <Link href={{ pathname: `/user/${item.User.id}` }}>
                       <a><Avatar>{item.User.nickname[0]}</Avatar></a>
                     </Link>
                   )}
