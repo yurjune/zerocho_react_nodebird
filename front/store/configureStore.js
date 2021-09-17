@@ -8,7 +8,7 @@ import rootSaga from '../sagas';
 // redux-thunk 참고하여 커스텀미들웨어 만들기
 const loggerMiddleware = ({ dispatch, getState }) => (next) => (action) => {
   console.log('loggerMiddleware');
-  console.log(action);
+  console.log(action.type);
   return next(action);
 };
 

@@ -1,7 +1,9 @@
 const express = require('express');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const { User, Post } = require('../models');
+const { Op } = require('sequelize');
+
+const { User, Post, Image, Comment } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express();
@@ -9,6 +11,7 @@ const router = express();
 // 매번 사용자 정보 복구(새로고침 해도 로그인 유지)
 router.get('/', async (req, res, next) => {
   try {
+    // console.log(req.headers);  // 쿠키들어있나 확인
     if (req.user) {
       const fullUserWithoutPassword = await User.findOne({
         where: { id: req.user.id },
@@ -31,6 +34,93 @@ router.get('/', async (req, res, next) => {
       res.status(200).json(fullUserWithoutPassword);
     } else {
       res.status(200).json(null);
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get('/:userId', async (req, res, next) => {
+  try {
+    const fullUserWithoutPassword = await User.findOne({
+      where: { id: req.params.userId },
+      attributes: {
+        exclude: ['password'],
+      },
+      include: [{
+        model: Post,
+        attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Followings',
+        attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Followers',
+        attributes: ['id'],
+      }]
+    })
+    if (fullUserWithoutPassword) {
+      const data = fullUserWithoutPassword.toJSON();  // sequelize에서 보내준 데이터는 json이 아니다.
+      data.Posts = data.Posts.length; // 개인정보 침해 예방
+      data.Followings = data.Followings.length;
+      data.Followers = data.Followers.length;
+      res.status(200).json(data);
+    } else {
+      res.status(404).json('존재하지 않는 사용자입니다.');
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get('/:userId/posts', async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId }});
+    if (user) {
+      const where = {};
+      if (parseInt(req.query.lastId, 10)) {
+        where.id = { [Op.lt]: parseInt(req.query.lastId, 10)}
+      }
+      const posts = await user.getPosts({
+        where,
+        limit: 10,
+        order: [
+          ['createdAt', 'DESC'],
+          [Comment, 'createdAt', 'DESC'],
+        ],
+        include: [{
+          model: Image,
+        }, {
+          model: Comment,
+          include: [{
+            model: User,
+            attributes: ['id', 'nickname'],
+          }]
+        }, {
+          model: User,
+          attributes: ['id', 'nickname'],
+        }, {
+          model: User,
+          through: 'Like',
+          as: 'Likers',
+          attributes: ['id'],
+        }, {
+          model: Post,
+          as: 'Retweet',
+          include: [{
+            model: User,
+            attributes: ['id', 'nickname'],
+          }, {
+            model: Image,
+          }]
+        }],
+      });
+      res.status(200).json(posts);
+    } else {
+      res.status(404).send('존재하지 않는 사용자입니다.');
     }
   } catch (error) {
     console.error(error);

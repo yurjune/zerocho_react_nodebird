@@ -43,22 +43,21 @@ const loginForm = () => {
   }, [email, password]); //
 
   /* 로그인 요청 과정
-  1. onSubmitForm이 실행되면 dispatch함수의 인수인 action creator함수가 실행
-  2. 만들어진 액션 객체를 받아 dispatch함수가 실행
-  3-1. dispatch에 의해 reducer함수가 실행
-  3-2. 3-1이 실행되면서 saga에서 액션 객체의 type에 해당하는 take함수도 실행
-  4. take함수의 호출을 따라 put함수가 실행되어 다시 reducer가 실행
+  1. onSubmitForm이 실행되면 dispatch함수가 액션객체를 받아 실행
+  2-1. dispatch에 의해 reducer함수가 실행
+  2-2. 2-1이 실행되면서 saga에서 액션 객체의 type에 해당하는 take함수도 실행
+  3. take함수의 호출을 따라 put함수가 실행되어 다시 reducer가 실행
   */
 
   return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-email" />
+        <label htmlFor="user-email">이메일</label>
         <br />
         <Input name="user-email" value={email} required onChange={onChangeEmail} />
       </div>
       <div>
-        <label htmlFor="user-password" />
+        <label htmlFor="user-password">패스워드</label>
         <br />
         <Input name="user-password" value={password} type="password" required onChange={onChangePassword} />
       </div>
