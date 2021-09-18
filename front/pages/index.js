@@ -73,6 +73,8 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
   context.store.dispatch(END);
   console.log('getServerSideProps end');
   await context.store.sagaTask.toPromise();
+
+  // return { props: { data: 123 } }; // data는 Home에 props로 전달가능.
 });
 
 export default Home;

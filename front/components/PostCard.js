@@ -5,12 +5,18 @@ import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, Ellipsis
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 import PostImages from './PostImages';
 import FollowButton from './FollowButton';
 import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST } from '../reducers/post';
+
+dayjs.locale('ko');
+dayjs.extend(relativeTime)
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
@@ -21,6 +27,7 @@ const PostCard = ({ post }) => {
   const id = useSelector((state) => state.user.me?.id);
   const { removePostLoading } = useSelector((state) => state.post);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
+
 
   const onLike = useCallback(() => {
     dispatch({
@@ -94,6 +101,7 @@ const PostCard = ({ post }) => {
             <Card
               cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}
             >
+              <div style={{ float: 'right' }}>{dayjs(post.createdAt).fromNow()}</div>
               <Card.Meta
                 avatar={(
                   <Link href={`/user/${post.Retweet.User.id}`}>
@@ -106,15 +114,18 @@ const PostCard = ({ post }) => {
             </Card>
           )
           : (
-            <Card.Meta
-              avatar={(
-                <Link href={`/user/${post.User.id}`}>
-                  <a><Avatar>{post.User.nickname[0]}</Avatar></a>
-                </Link>
-              )}
-              title={post.User.nickname}
-              description={<PostCardContent postData={post.content} />}
-            />
+            <>
+              <div style={{ float: 'right' }}>{dayjs(post.createdAt).fromNow()}</div>
+              <Card.Meta
+                avatar={(
+                  <Link href={`/user/${post.User.id}`}>
+                    <a><Avatar>{post.User.nickname[0]}</Avatar></a>
+                  </Link>
+                )}
+                title={post.User.nickname}
+                description={<PostCardContent postData={post.content} />}
+              />
+            </>
           )}
 
       </Card>
